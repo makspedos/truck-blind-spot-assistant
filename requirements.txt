@@ -1,0 +1,5 @@
+nuscenes-devkit==1.2.0
+numpy==1.26.4
+ultralytics==8.4.61
+matplotlib==3.10.9
+opencv-python==4.11.0.86
