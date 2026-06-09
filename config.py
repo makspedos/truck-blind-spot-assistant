@@ -1,0 +1,25 @@
+CAMERA_NAMES = [
+    'CAM_FRONT',
+    'CAM_BACK',
+    'CAM_FRONT_LEFT',
+    'CAM_FRONT_RIGHT',
+]
+
+DANGER_CLASSES = {
+    'person',
+    'bicycle',
+    'motorcycle',
+    'car',
+    'bus',
+    'truck',
+}
+
+DEFAULT_DATAROOT = 'dataset'
+DEFAULT_NUSCENES_VERSION = 'v1.0-mini'
+DEFAULT_SAMPLE_START = 90
+DEFAULT_SAMPLE_END = 95
+DEFAULT_MODEL_PATH = 'models/yolov8n.pt'
+MIN_CONFIDENCE = 0.5
+BASE_THRESHOLD = 0.05
+EXTREME_THRESHOLD = 0.3
+CONSECUTIVE_DANGER_THRESHOLD = 5
