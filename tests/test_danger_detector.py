@@ -62,30 +62,44 @@ class DangerDetectorThresholdTest(unittest.TestCase):
   def test_front_center_object_above_threshold_is_danger(self):
     detector = make_detector()
 
-    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[35, 10, 65, 40]))
+    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[35, 65, 65, 95]))
 
     self.assertTrue(danger)
 
   def test_front_side_object_below_extreme_threshold_is_not_danger(self):
     detector = make_detector()
 
-    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[5, 10, 35, 40]))
+    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[5, 65, 35, 95]))
 
     self.assertFalse(danger)
 
   def test_left_camera_object_on_left_is_danger(self):
     detector = make_detector()
 
-    danger = detector.check_threshold('CAM_FRONT_LEFT', make_boxes(coordinates=[5, 10, 35, 40]))
+    danger = detector.check_threshold('CAM_FRONT_LEFT', make_boxes(coordinates=[5, 65, 35, 95]))
 
     self.assertTrue(danger)
 
   def test_right_camera_object_on_right_is_danger(self):
     detector = make_detector()
 
-    danger = detector.check_threshold('CAM_FRONT_RIGHT', make_boxes(coordinates=[65, 10, 95, 40]))
+    danger = detector.check_threshold('CAM_FRONT_RIGHT', make_boxes(coordinates=[65, 65, 95, 95]))
 
     self.assertTrue(danger)
+
+  def test_front_center_object_in_middle_is_not_danger(self):
+    detector = make_detector()
+
+    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[35, 10, 65, 50]))
+
+    self.assertFalse(danger)
+
+  def test_extreme_object_in_middle_is_not_danger(self):
+    detector = make_detector()
+
+    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[10, 0, 90, 50]))
+
+    self.assertFalse(danger)
 
   def test_low_confidence_object_is_not_danger(self):
     detector = make_detector()
@@ -98,6 +112,13 @@ class DangerDetectorThresholdTest(unittest.TestCase):
     detector = make_detector()
 
     danger = detector.check_threshold('CAM_FRONT', make_boxes(class_id=9, coordinates=[35, 10, 65, 40]))
+
+    self.assertFalse(danger)
+
+  def test_unknown_camera_is_not_danger(self):
+    detector = make_detector()
+
+    danger = detector.check_threshold('UNKNOWN_CAMERA', make_boxes(coordinates=[35, 65, 65, 95]))
 
     self.assertFalse(danger)
 

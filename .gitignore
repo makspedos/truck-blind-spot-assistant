@@ -11,3 +11,4 @@ dataset
 *.ipynb
 detection-model/
 runs/
+*.mp4

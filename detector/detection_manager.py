@@ -33,12 +33,16 @@ class DetectionManager:
 
 
   def display(self):
+    if not self.data:
+      raise ValueError('No frames were provided for detection.')
+
     fig, axes = plt.subplots(len(self.data), len(self.camera_names), figsize=(15,10))
-    axes = axes.flatten()
+    axes = axes.flatten() if hasattr(axes, 'flatten') else [axes]
     for frame in range(len(self.data)):
       for i, snapshot in enumerate(self.data[frame]):
         current_camera = snapshot['camera']
-        result = self.danger_detector.detect_with_yolo(snapshot['path'])
+        image_input = snapshot['image'] if 'image' in snapshot else snapshot['path']
+        result = self.danger_detector.detect_with_yolo(image_input)
         danger = self.danger_detector.check_threshold(current_camera,result[0].boxes)
         risk_level = self.risk_state.update(current_camera, danger)
         risk_count = self.risk_state.get_count(current_camera)

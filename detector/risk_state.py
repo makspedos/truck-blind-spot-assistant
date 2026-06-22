@@ -17,7 +17,10 @@ class RiskState:
   def update(self, camera, is_danger):
     """Updates one camera state and returns the current risk level."""
     if is_danger:
-      self.danger_counts[camera] += 1
+      self.danger_counts[camera] = min(
+          self.danger_counts[camera] + 1,
+          self.danger_threshold,
+      )
     else:
       self.danger_counts[camera] = 0
 
@@ -31,6 +34,9 @@ class RiskState:
 
     if count >= self.warning_threshold:
       return 'warning'
+
+    if count > 0:
+      return 'possible'
 
     return 'clear'
 

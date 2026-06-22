@@ -1,6 +1,14 @@
 import unittest
 
-from config import BASE_THRESHOLD, CAMERA_NAMES, CONSECUTIVE_DANGER_THRESHOLD, DANGER_CLASSES, EXTREME_THRESHOLD
+from config import (
+    BASE_THRESHOLD,
+    BOTTOM_POSITION_THRESHOLD,
+    CAMERA_NAMES,
+    CONSECUTIVE_DANGER_THRESHOLD,
+    DANGER_CLASSES,
+    DEFAULT_VIDEO_CAMERA,
+    EXTREME_THRESHOLD,
+)
 
 
 class ConfigTest(unittest.TestCase):
@@ -18,7 +26,12 @@ class ConfigTest(unittest.TestCase):
   def test_thresholds_are_valid(self):
     self.assertGreater(BASE_THRESHOLD, 0)
     self.assertGreater(EXTREME_THRESHOLD, BASE_THRESHOLD)
+    self.assertGreater(BOTTOM_POSITION_THRESHOLD, 0)
+    self.assertLessEqual(BOTTOM_POSITION_THRESHOLD, 1)
     self.assertGreater(CONSECUTIVE_DANGER_THRESHOLD, 0)
+
+  def test_default_video_camera_is_a_supported_camera(self):
+    self.assertIn(DEFAULT_VIDEO_CAMERA, CAMERA_NAMES)
 
   def test_danger_classes_include_vehicle_classes(self):
     self.assertTrue({'car', 'bus', 'truck'}.issubset(DANGER_CLASSES))

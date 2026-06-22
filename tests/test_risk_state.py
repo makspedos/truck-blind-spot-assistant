@@ -37,6 +37,15 @@ class RiskStateTest(unittest.TestCase):
     self.assertEqual(level, 'danger')
     self.assertEqual(risk_state.get_count('CAM_FRONT'), 3)
 
+  def test_danger_count_does_not_exceed_danger_threshold(self):
+    risk_state = RiskState(['CAM_FRONT'], warning_threshold=2, danger_threshold=3)
+
+    for _ in range(5):
+      level = risk_state.update('CAM_FRONT', True)
+
+    self.assertEqual(level, 'danger')
+    self.assertEqual(risk_state.get_count('CAM_FRONT'), 3)
+
   def test_clear_frame_resets_count(self):
     risk_state = RiskState(['CAM_FRONT'], warning_threshold=2, danger_threshold=3)
 
