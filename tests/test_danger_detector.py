@@ -66,7 +66,7 @@ class DangerDetectorThresholdTest(unittest.TestCase):
 
     self.assertTrue(danger)
 
-  def test_front_side_object_below_extreme_threshold_is_not_danger(self):
+  def test_front_side_object_outside_zone_is_not_danger(self):
     detector = make_detector()
 
     danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[5, 65, 35, 95]))
@@ -77,6 +77,13 @@ class DangerDetectorThresholdTest(unittest.TestCase):
     detector = make_detector()
 
     danger = detector.check_threshold('CAM_FRONT_LEFT', make_boxes(coordinates=[5, 65, 35, 95]))
+
+    self.assertTrue(danger)
+
+  def test_person_overlapping_zone_is_danger(self):
+    detector = make_detector()
+
+    danger = detector.check_threshold('CAM_FRONT_LEFT', make_boxes(class_id=0, coordinates=[10, 65, 20, 95]))
 
     self.assertTrue(danger)
 
@@ -94,10 +101,17 @@ class DangerDetectorThresholdTest(unittest.TestCase):
 
     self.assertFalse(danger)
 
-  def test_extreme_object_in_middle_is_not_danger(self):
+  def test_large_object_without_overlap_is_not_danger(self):
     detector = make_detector()
 
     danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[10, 0, 90, 50]))
+
+    self.assertFalse(danger)
+
+  def test_tiny_object_with_overlap_is_not_danger(self):
+    detector = make_detector()
+
+    danger = detector.check_threshold('CAM_FRONT', make_boxes(coordinates=[45, 70, 47, 72]))
 
     self.assertFalse(danger)
 

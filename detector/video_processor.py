@@ -68,6 +68,7 @@ class VideoProcessor:
         else:
           annotated_frame = frame.copy()
 
+        self.danger_detector.draw_thresholds(annotated_frame, self.camera)
         risk_level = self.risk_state.get_level(self.camera)
         risk_count = self.risk_state.get_count(self.camera)
         self._draw_risk_label(annotated_frame, risk_level, risk_count)

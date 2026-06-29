@@ -13,7 +13,8 @@ This is not a production-ready driver assistance system. The current risk logic 
 
 - YOLO-based object detection with Ultralytics.
 - Camera-specific horizontal danger zones.
-- Bottom-zone filtering so objects must appear close to the lower part of the frame before they count as dangerous.
+- Shaded threshold zone overlay for each camera.
+- Overlap-based danger logic: detections count when their bounding box meaningfully enters the active threshold zone.
 - Consecutive-frame risk state:
   - `clear`
   - `possible`
@@ -37,6 +38,9 @@ truck-blind-spot-assistant/
     video_processor.py
   scripts/
     preview_images.py
+  docs/
+    images/
+      nuscenes_start_61_end_64.png
   tests/
     test_config.py
     test_danger_detector.py
@@ -95,6 +99,14 @@ uv run python app.py --dataroot dataset --version v1.0-mini --start 90 --end 95
 
 The nuScenes mode loads selected camera frames and displays YOLO detections with camera-specific danger state.
 
+Example result from:
+
+```bash
+uv run python app.py --start 61 --end 64
+```
+
+![nuScenes detection example](docs/images/nuscenes_start_61_end_64.png)
+
 ## Running With One Video
 
 ```bash
@@ -121,6 +133,6 @@ Current test coverage is focused on the core threshold and risk-state behavior.
 
 - Video mode processes one selected video file, not synchronized multi-camera video.
 - nuScenes data is used as synchronized camera frame groups, not as regular MP4 video files.
-- Danger detection is based on camera zones, object size, confidence, and bottom-frame position. These thresholds are heuristic.
+- Danger detection is based on camera zones, confidence, and bounding-box overlap with the shaded threshold zone. These thresholds are heuristic.
 - The project does not yet include a production-grade calibration system, tracking system, or real-time deployment pipeline.
 - The current logic is intended for prototyping and visual testing, not for safety-critical decisions.

@@ -1,13 +1,13 @@
 import unittest
 
 from config import (
-    BASE_THRESHOLD,
     BOTTOM_POSITION_THRESHOLD,
     CAMERA_NAMES,
     CONSECUTIVE_DANGER_THRESHOLD,
     DANGER_CLASSES,
     DEFAULT_VIDEO_CAMERA,
-    EXTREME_THRESHOLD,
+    MIN_OBJECT_AREA,
+    MIN_ZONE_OVERLAP_RATIO,
 )
 
 
@@ -24,8 +24,9 @@ class ConfigTest(unittest.TestCase):
     )
 
   def test_thresholds_are_valid(self):
-    self.assertGreater(BASE_THRESHOLD, 0)
-    self.assertGreater(EXTREME_THRESHOLD, BASE_THRESHOLD)
+    self.assertGreater(MIN_OBJECT_AREA, 0)
+    self.assertGreater(MIN_ZONE_OVERLAP_RATIO, 0)
+    self.assertLessEqual(MIN_ZONE_OVERLAP_RATIO, 1)
     self.assertGreater(BOTTOM_POSITION_THRESHOLD, 0)
     self.assertLessEqual(BOTTOM_POSITION_THRESHOLD, 1)
     self.assertGreater(CONSECUTIVE_DANGER_THRESHOLD, 0)

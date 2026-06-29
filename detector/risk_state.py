@@ -22,7 +22,7 @@ class RiskState:
           self.danger_threshold,
       )
     else:
-      self.danger_counts[camera] = 0
+      self.danger_counts[camera] = max(self.danger_counts[camera] - 1, 0)
 
     return self.get_level(camera)
 

@@ -52,6 +52,7 @@ class DetectionManager:
 
         idx = frame * len(self.camera_names) + i
         image_bgr = result[0].plot()
+        self.danger_detector.draw_thresholds(image_bgr, current_camera)
         image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
         axes[idx].imshow(image)
         if risk_level == 'danger':
